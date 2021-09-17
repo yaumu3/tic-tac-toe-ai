@@ -1,5 +1,6 @@
 from .game.strategy.human import HumanStrategy
 from .game.strategy.random import RandomStrategy
+from .game.strategy.alpha_beta import AlphaBetaStrategy
 from .model import TicTacToeModel, TicTacToePlayer
 from .view import TicTacToeView
 
@@ -8,7 +9,7 @@ class TicTacToeController:
     def __init__(self):
         players = (
             TicTacToePlayer("x", RandomStrategy()),
-            TicTacToePlayer("o", RandomStrategy()),
+            TicTacToePlayer("o", AlphaBetaStrategy()),
         )
         self.model = TicTacToeModel(players)
         self.view = TicTacToeView(self.model)
