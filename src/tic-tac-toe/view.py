@@ -48,3 +48,21 @@ class TicTacToeView:
             action = cand[0]
             break
         self.receive_input_event.trigger(action=action)
+
+
+class TicTacToeBencherView:
+    def __init__(self, model: TicTacToeModel) -> None:
+        self.model = model
+        self.start_bench_event = Event()
+
+    def bench(self) -> None:
+        n = "a"
+        while not n.isnumeric():
+            n = input("Input number of trials: ")
+        self.start_bench_event.trigger(n=int(n))
+
+    def notify_result(self, scores: dict[TicTacToePlayer, float]) -> None:
+        [
+            print(f"{type(player.strategy).__name__}: {score}")
+            for player, score in scores.items()
+        ]

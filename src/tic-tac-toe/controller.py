@@ -1,6 +1,6 @@
-from .game import strategy
+from .game import bencher, strategy
 from .model import TicTacToeModel, TicTacToePlayer
-from .view import TicTacToeView
+from .view import TicTacToeBencherView, TicTacToeView
 
 
 class TicTacToeController:
@@ -24,3 +24,20 @@ class TicTacToeController:
 
     def run(self):
         self.view.render()
+
+
+class TicTacToeBencherController:
+    def __init__(self):
+        players = (
+            TicTacToePlayer("x", strategy.RandomStrategy()),
+            TicTacToePlayer("o", strategy.AlphaBetaStrategy()),
+        )
+        self.model = TicTacToeModel(players)
+        self.bencher = bencher.Bencher(self.model)
+        self.view = TicTacToeBencherView(self.model)
+
+        self.view.start_bench_event.add_listener(self.bencher.bench)
+        self.bencher.bench_done_event.add_listener(self.view.notify_result)
+
+    def run(self):
+        self.view.bench()
