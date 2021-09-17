@@ -12,7 +12,6 @@ class AlphaBetaStrategy(Strategy[Action]):
         alpha = -INF
         for action in actions:
             score = -self.alpha_beta(self._simulate(model, action), -INF, -alpha)
-            print(action, score)
             if score > alpha:
                 best_action = action
                 alpha = score
