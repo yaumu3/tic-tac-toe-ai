@@ -1,9 +1,9 @@
 import random
 
-from ..import Action, Player, State, Strategy
+from .. import Action, Model, Strategy
 
 
 class RandomStrategy(Strategy[Action]):
-    def get_action(self, player: Player[Action], state: State[Action]) -> Action:
-        actions = state.get_legal_actions(player)
+    def get_action(self, model: Model[Action]) -> Action:
+        actions = model.get_legal_actions()
         return random.choice(actions)
