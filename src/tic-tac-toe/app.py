@@ -1,5 +1,5 @@
-from .controller import TicTacToeController
+from .controller import TicTacToeBencherController
 
 if __name__ == "__main__":
-    app = TicTacToeController()
+    app = TicTacToeBencherController()
     app.run()
