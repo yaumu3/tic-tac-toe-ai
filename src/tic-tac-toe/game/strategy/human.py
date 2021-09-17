@@ -1,7 +1,7 @@
 from typing import Optional
 
 from ...event import Event
-from ..import Action, Player, State, Strategy
+from .. import Action, Model, Strategy
 
 
 class HumanStrategy(Strategy[Action]):
@@ -9,8 +9,8 @@ class HumanStrategy(Strategy[Action]):
         self.await_input_event = Event()
         self.action: Optional[Action] = None
 
-    def get_action(self, player: Player[Action], state: State[Action]) -> Action:
-        actions = state.get_legal_actions(player)
+    def get_action(self, model: Model[Action]) -> Action:
+        actions = model.get_legal_actions()
         self.await_input_event.trigger(actions=actions)
         assert self.action is not None
         return self.action

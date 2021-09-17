@@ -12,8 +12,8 @@ class Player(Generic[Action]):
     color: str
     strategy: "Strategy[Action]"
 
-    def pick_action(self, state: "State[Action]") -> Action:
-        return self.strategy.get_action(self, state)
+    def pick_action(self, model: "Model[Action]") -> Action:
+        return self.strategy.get_action(model)
 
 
 class State(Generic[Action], metaclass=ABCMeta):
@@ -55,7 +55,7 @@ class Model(Generic[Action]):
         self.is_draw_event = Event()
 
     def tick(self) -> None:
-        action = self.current_player.pick_action(self.state)
+        action = self.current_player.pick_action(self)
         self.state.operate(self.current_player, action)
         self.update_state_event.trigger(action=action, player=self.current_player)
 
@@ -69,12 +69,15 @@ class Model(Generic[Action]):
         if not is_over:
             self.switch_player()
 
-    def switch_player(self):
+    def switch_player(self) -> None:
         self._current_player_idx ^= 1
         self.current_player = self.players[self._current_player_idx]
+
+    def get_legal_actions(self) -> list[Action]:
+        return self.state.get_legal_actions(self.current_player)
 
 
 class Strategy(Generic[Action], metaclass=ABCMeta):
     @abstractmethod
-    def get_action(self, player: Player[Action], state: State[Action]) -> Action:
+    def get_action(self, model: Model[Action]) -> Action:
         raise NotImplementedError
