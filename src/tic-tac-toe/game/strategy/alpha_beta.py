@@ -1,6 +1,6 @@
 from copy import deepcopy
-from .. import Action, Model, Strategy
 
+from .. import Action, Model, Strategy
 
 INF = 1 << 60
 
