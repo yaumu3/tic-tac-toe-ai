@@ -29,7 +29,7 @@ class TicTacToeController:
 class TicTacToeBencherController:
     def __init__(self):
         players = (
-            TicTacToePlayer("x", strategy.RandomStrategy()),
+            TicTacToePlayer("x", strategy.MCTSStrategy()),
             TicTacToePlayer("o", strategy.AlphaBetaStrategy()),
         )
         self.model = TicTacToeModel(players)
@@ -37,6 +37,7 @@ class TicTacToeBencherController:
         self.view = TicTacToeBencherView(self.model)
 
         self.view.start_bench_event.add_listener(self.bencher.bench)
+        self.bencher.episode_done_event.add_listener(self.view.notify_progress)
         self.bencher.bench_done_event.add_listener(self.view.notify_result)
 
     def run(self):
