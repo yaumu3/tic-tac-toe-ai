@@ -16,7 +16,7 @@ class TicTacToePlayer(Player[TicTacToeAction]):
 
 class TicTacToeState(State[TicTacToeAction]):
     def __init__(self) -> None:
-        self.reset()
+        self.board: list[Optional[Player]] = [None] * 9
 
     def is_draw(self) -> bool:
         return all(self.board) and not self.has_winner()
@@ -52,9 +52,6 @@ class TicTacToeState(State[TicTacToeAction]):
 
     def get_legal_actions(self, _: Player) -> list[TicTacToeAction]:
         return [TicTacToeAction(i) for i in range(9) if self.board[i] is None]
-
-    def reset(self) -> None:
-        self.board: list[Optional[Player]] = [None] * 9
 
 
 class TicTacToeModel(Model[TicTacToeAction]):

@@ -33,18 +33,15 @@ class State(Generic[Action], metaclass=ABCMeta):
     def get_legal_actions(self, player: Player[Action]) -> list[Action]:
         raise NotImplementedError
 
-    @abstractmethod
-    def reset(self) -> None:
-        raise NotImplementedError
-
 
 class Model(Generic[Action]):
     def __init__(
         self,
-        state: Callable[[], State[Action]],
+        state_factory: Callable[[], State[Action]],
         players: tuple[Player[Action], Player[Action]],
     ) -> None:
-        self.state = state()
+        self.state_factory = state_factory
+        self.reset()
 
         self.players = players
         self._current_player_idx = 0
@@ -75,6 +72,9 @@ class Model(Generic[Action]):
 
     def get_legal_actions(self) -> list[Action]:
         return self.state.get_legal_actions(self.current_player)
+
+    def reset(self) -> None:
+        self.state = self.state_factory()
 
 
 class Strategy(Generic[Action], metaclass=ABCMeta):
