@@ -1,6 +1,4 @@
-from .game.strategy.human import HumanStrategy
-from .game.strategy.random import RandomStrategy
-from .game.strategy.alpha_beta import AlphaBetaStrategy
+from .game import strategy
 from .model import TicTacToeModel, TicTacToePlayer
 from .view import TicTacToeView
 
@@ -8,8 +6,8 @@ from .view import TicTacToeView
 class TicTacToeController:
     def __init__(self):
         players = (
-            TicTacToePlayer("x", RandomStrategy()),
-            TicTacToePlayer("o", AlphaBetaStrategy()),
+            TicTacToePlayer("x", strategy.RandomStrategy()),
+            TicTacToePlayer("o", strategy.AlphaBetaStrategy()),
         )
         self.model = TicTacToeModel(players)
         self.view = TicTacToeView(self.model)
@@ -20,7 +18,7 @@ class TicTacToeController:
         self.view.tick_event.add_listener(self.model.tick)
 
         for player in players:
-            if isinstance(player.strategy, HumanStrategy):
+            if isinstance(player.strategy, strategy.HumanStrategy):
                 player.strategy.await_input_event.add_listener(self.view.ask_input)
                 self.view.receive_input_event.add_listener(player.strategy.set_action)
 
