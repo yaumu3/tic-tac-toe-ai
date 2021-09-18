@@ -61,6 +61,9 @@ class TicTacToeBencherView:
             n = input("Input number of trials: ")
         self.start_bench_event.trigger(n=int(n))
 
+    def notify_progress(self, current_episode: int, episodes: int) -> None:
+        print(f"{current_episode}/{episodes}\r", end="")
+
     def notify_result(self, scores: dict[TicTacToePlayer, float]) -> None:
         [
             print(f"{type(player.strategy).__name__}: {score}")
